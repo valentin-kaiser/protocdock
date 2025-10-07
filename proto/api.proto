@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package api;
+
+import "generic.proto";
+
+option go_package = "protocdock/api";
+
+service API {
+    rpc Ping(generic.Empty) returns (generic.Empty);
+
+    rpc Pong(generic.Optional) returns (generic.Optional);
+}

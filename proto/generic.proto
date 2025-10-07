@@ -5,3 +5,7 @@ package generic;
 option go_package = "protocdock/generic";
 
 message Empty {}
+
+message Optional{
+    optional string value = 1;
+}

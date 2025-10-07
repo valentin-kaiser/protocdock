@@ -57,12 +57,59 @@ func (*Empty) Descriptor() ([]byte, []int) {
 	return file_generic_proto_rawDescGZIP(), []int{0}
 }
 
+type Optional struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Value         *string                `protobuf:"bytes,1,opt,name=value,proto3,oneof" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Optional) Reset() {
+	*x = Optional{}
+	mi := &file_generic_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Optional) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Optional) ProtoMessage() {}
+
+func (x *Optional) ProtoReflect() protoreflect.Message {
+	mi := &file_generic_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Optional.ProtoReflect.Descriptor instead.
+func (*Optional) Descriptor() ([]byte, []int) {
+	return file_generic_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Optional) GetValue() string {
+	if x != nil && x.Value != nil {
+		return *x.Value
+	}
+	return ""
+}
+
 var File_generic_proto protoreflect.FileDescriptor
 
 const file_generic_proto_rawDesc = "" +
 	"\n" +
 	"\rgeneric.proto\x12\ageneric\"\a\n" +
-	"\x05EmptyB\x14Z\x12protocdock/genericb\x06proto3"
+	"\x05Empty\"/\n" +
+	"\bOptional\x12\x19\n" +
+	"\x05value\x18\x01 \x01(\tH\x00R\x05value\x88\x01\x01B\b\n" +
+	"\x06_valueB\x14Z\x12protocdock/genericb\x06proto3"
 
 var (
 	file_generic_proto_rawDescOnce sync.Once
@@ -76,9 +123,10 @@ func file_generic_proto_rawDescGZIP() []byte {
 	return file_generic_proto_rawDescData
 }
 
-var file_generic_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_generic_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_generic_proto_goTypes = []any{
-	(*Empty)(nil), // 0: generic.Empty
+	(*Empty)(nil),    // 0: generic.Empty
+	(*Optional)(nil), // 1: generic.Optional
 }
 var file_generic_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -93,13 +141,14 @@ func file_generic_proto_init() {
 	if File_generic_proto != nil {
 		return
 	}
+	file_generic_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_generic_proto_rawDesc), len(file_generic_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
