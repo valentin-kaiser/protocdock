@@ -25,7 +25,7 @@ ARG CA_CERTIFICATES_VERSION=20250419
 ARG GNUPG_VERSION=2.4.7-21
 # https://deb.nodesource.com/
 # renovate: datasource=node-version depName=node packageName=node
-ARG NODE_SETUP_VERSION=22.x
+ARG NODE_SETUP_VERSION=24.x
 # https://packages.debian.org/stable/nodejs
 # renovate: release=stable depName=nodejs
 ARG NODE_VERSION=22.13.1-1nodesource1
@@ -48,7 +48,7 @@ ARG PROTOC_GEN_GO_GRPC_VERSION=1.5.1
 ARG PROTOC_GEN_GO_JRPC_VERSION=0.0.4
 # https://github.com/protocolbuffers/protobuf-javascript/releases
 # renovate: datasource=github-releases depName=protobuf-javascript packageName=protocolbuffers/protobuf-javascript
-ARG PROTOBUF_JAVASCRIPT_VERSION=3.21.4
+ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.0
 # https://github.com/grpc/grpc-web/releases
 # renovate: datasource=github-releases depName=grpc-web packageName=grpc/grpc-web
 ARG GRPC_WEB_VERSION=2.0.0
