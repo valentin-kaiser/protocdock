@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package generic;
 
-option go_package = "github.com/valentin-kaiser/protocdock/proto/gen/go/generic";
+option go_package = "protocdock/generic";
 
 message Empty {}
 
 message Optional{
-  optional string value = 1;
+    optional string value = 1;
 }

@@ -19,9 +19,9 @@ proto-go:
 	@mkdir -p $(GO_GEN_DIR)
 	$(PROTOC) -I $(PROTO_PATH) \
 	  --go_out=$(GO_GEN_DIR) \
-	  --go_opt=module=github.com/valentin-kaiser/protocdock/proto/gen/go \
+	  --go_opt=module=protocdock \
 	  --go-jrpc_out=$(GO_GEN_DIR) \
-	  --go-jrpc_opt=module=github.com/valentin-kaiser/protocdock/proto/gen/go \
+	  --go-jrpc_opt=module=protocdock \
 	  $(PROTO_FILES)
 
 proto-ts:
