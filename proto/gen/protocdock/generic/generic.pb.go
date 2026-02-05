@@ -109,7 +109,7 @@ const file_generic_proto_rawDesc = "" +
 	"\x05Empty\"/\n" +
 	"\bOptional\x12\x19\n" +
 	"\x05value\x18\x01 \x01(\tH\x00R\x05value\x88\x01\x01B\b\n" +
-	"\x06_valueB<Z:github.com/valentin-kaiser/protocdock/proto/gen/go/genericb\x06proto3"
+	"\x06_valueB\x14Z\x12protocdock/genericb\x06proto3"
 
 var (
 	file_generic_proto_rawDescOnce sync.Once
