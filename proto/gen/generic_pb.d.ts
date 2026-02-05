@@ -35,7 +35,7 @@ export namespace Optional {
     value?: string;
   };
 
-  export const enum ValueCase {
+  export enum ValueCase {
     _VALUE_NOT_SET = 0,
     VALUE = 1,
   }
