@@ -4,10 +4,16 @@ package api;
 
 import "generic.proto";
 
-option go_package = "protocdock/api";
+option go_package = "github.com/valentin-kaiser/protocdock/proto/gen/go/api";
 
 service API {
-    rpc Ping(generic.Empty) returns (generic.Empty);
+  rpc Ping(generic.Empty) returns (generic.Empty);
 
-    rpc Pong(generic.Optional) returns (generic.Optional);
+  rpc Pong(generic.Optional) returns (generic.Optional);
+
+  rpc ServerEcho(generic.Empty) returns (stream generic.Optional);
+
+  rpc ClientEcho(stream generic.Optional) returns (generic.Empty);
+
+  rpc BidirectionalEcho(stream generic.Optional) returns (stream generic.Optional);
 }
