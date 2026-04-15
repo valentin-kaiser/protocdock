@@ -29,7 +29,7 @@ ARG NODE_SETUP_VERSION=22.x
 ARG NODE_VERSION=22.13.1-1nodesource1
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
-ARG GO_VERSION=1.25.7
+ARG GO_VERSION=1.26.2
 
 # Defined default version for Protoc and Plugins
 # https://github.com/protocolbuffers/protobuf
@@ -52,7 +52,7 @@ ARG PROTOBUF_JAVASCRIPT_VERSION=3.21.4
 ARG GRPC_WEB_VERSION=2.0.2
 # https://www.npmjs.com/package/ts-proto
 # renovate: datasource=npm depName=ts-proto packageName=ts-proto
-ARG TS_PROTO_VERSION=2.11.2
+ARG TS_PROTO_VERSION=2.11.6
 # https://github.com/pseudomuto/protoc-gen-doc/releases
 # renovate: datasource=github-releases depName=protoc-gen-doc packageName=pseudomuto/protoc-gen-doc
 ARG PROTOC_GEN_DOC_VERSION=1.5.1
