@@ -3,9 +3,8 @@
 name: Publish Docker Image
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 permissions:
   contents: read
