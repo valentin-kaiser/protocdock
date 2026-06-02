@@ -29,7 +29,7 @@ ARG NODE_SETUP_VERSION=24.x
 ARG NODE_VERSION=24.14.*
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
-ARG GO_VERSION=1.26.3
+ARG GO_VERSION=1.26.4
 
 # Defined default version for Protoc and Plugins
 # https://github.com/protocolbuffers/protobuf
