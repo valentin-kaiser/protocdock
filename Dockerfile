@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Define default versions for tools needed to install Golang, Protoc, Plugins and the PATH
 # https://packages.debian.org/stable/curl
 # renovate: release=stable depName=curl
-ARG CURL_VERSION=8.14.1-2+deb13u3
+ARG CURL_VERSION=8.14.1-2+deb13u4
 # https://packages.debian.org/stable/git
 # renovate: release=stable depName=git
 ARG GIT_VERSION=1:2.47.3-0+deb13u1
@@ -29,7 +29,7 @@ ARG NODE_SETUP_VERSION=24.x
 ARG NODE_VERSION=24.14.*
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
-ARG GO_VERSION=1.26.4
+ARG GO_VERSION=1.26.5
 
 # Defined default version for Protoc and Plugins
 # https://github.com/protocolbuffers/protobuf
@@ -52,7 +52,7 @@ ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.2
 ARG GRPC_WEB_VERSION=2.0.2
 # https://www.npmjs.com/package/ts-proto
 # renovate: datasource=npm depName=ts-proto packageName=ts-proto
-ARG TS_PROTO_VERSION=2.11.8
+ARG TS_PROTO_VERSION=2.12.0
 # https://github.com/pseudomuto/protoc-gen-doc/releases
 # renovate: datasource=github-releases depName=protoc-gen-doc packageName=pseudomuto/protoc-gen-doc
 ARG PROTOC_GEN_DOC_VERSION=1.5.1
