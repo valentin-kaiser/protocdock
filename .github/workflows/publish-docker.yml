@@ -27,6 +27,7 @@ jobs:
           images: |
             ghcr.io/valentin-kaiser/protocdock
           tags: |
+            type=raw,value=${{ github.event.release.tag_name }}
             type=raw,value=latest,enable={{is_default_branch}}
       -
         name: Set up QEMU
