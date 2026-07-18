@@ -43,7 +43,7 @@ ARG PROTOC_GEN_GO_VERSION=1.36.11
 ARG PROTOC_GEN_GO_GRPC_VERSION=1.6.2
 # https://pkg.go.dev/github.com/valentin-kaiser/protoc-gen-jrpc?tab=versions
 # renovate: datasource=go depName=protoc-gen-jrpc packageName=github.com/valentin-kaiser/protoc-gen-jrpc
-ARG PROTOC_GEN_GO_JRPC_VERSION=1.0.1
+ARG PROTOC_GEN_GO_JRPC_VERSION=1.0.2
 # https://github.com/protocolbuffers/protobuf-javascript/releases
 # renovate: datasource=github-releases depName=protobuf-javascript packageName=protocolbuffers/protobuf-javascript
 ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.2
