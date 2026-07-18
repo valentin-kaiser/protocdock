@@ -28,7 +28,7 @@ jobs:
             ghcr.io/valentin-kaiser/protocdock
           tags: |
             type=raw,value=${{ github.event.release.tag_name }}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v4
