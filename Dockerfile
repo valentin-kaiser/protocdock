@@ -29,7 +29,7 @@ ARG NODE_SETUP_VERSION=24.x
 ARG NODE_VERSION=24.14.*
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
-ARG GO_VERSION=1.26.5
+ARG GO_VERSION=1.27.1
 
 # Defined default version for Protoc and Plugins
 # https://github.com/protocolbuffers/protobuf
@@ -37,7 +37,7 @@ ARG GO_VERSION=1.26.5
 ARG PROTOC_VERSION=v35.1
 # https://pkg.go.dev/google.golang.org/protobuf/cmd/protoc-gen-go?tab=versions
 # renovate: datasource=go depName=protoc-gen-go packageName=google.golang.org/protobuf/cmd/protoc-gen-go
-ARG PROTOC_GEN_GO_VERSION=1.36.11
+ARG PROTOC_GEN_GO_VERSION=1.36.12
 # https://pkg.go.dev/google.golang.org/grpc/cmd/protoc-gen-go-grpc?tab=versions
 # renovate: datasource=go depName=protoc-gen-go-grpc packageName=google.golang.org/grpc/cmd/protoc-gen-go-grpc
 ARG PROTOC_GEN_GO_GRPC_VERSION=1.6.2
@@ -49,10 +49,10 @@ ARG PROTOC_GEN_GO_JRPC_VERSION=1.0.2
 ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.2
 # https://github.com/grpc/grpc-web/releases
 # renovate: datasource=github-releases depName=grpc-web packageName=grpc/grpc-web
-ARG GRPC_WEB_VERSION=2.0.2
+ARG GRPC_WEB_VERSION=2.1.1
 # https://www.npmjs.com/package/ts-proto
 # renovate: datasource=npm depName=ts-proto packageName=ts-proto
-ARG TS_PROTO_VERSION=2.12.0
+ARG TS_PROTO_VERSION=2.12.1
 # https://github.com/pseudomuto/protoc-gen-doc/releases
 # renovate: datasource=github-releases depName=protoc-gen-doc packageName=pseudomuto/protoc-gen-doc
 ARG PROTOC_GEN_DOC_VERSION=1.5.1
