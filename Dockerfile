@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Define default versions for tools needed to install Golang, Protoc, Plugins and the PATH
 # https://packages.debian.org/stable/curl
 # renovate: release=stable depName=curl
-ARG CURL_VERSION=8.14.1-2+deb13u4
+ARG CURL_VERSION=8.14.1-2+deb13u5
 # https://packages.debian.org/stable/git
 # renovate: release=stable depName=git
 ARG GIT_VERSION=1:2.47.3-0+deb13u1
@@ -16,7 +16,7 @@ ARG GIT_VERSION=1:2.47.3-0+deb13u1
 ARG MAKE_VERSION=4.4.1-2
 # https://packages.debian.org/stable/unzip
 # renovate: release=stable depName=unzip
-ARG UNZIP_VERSION=6.0-29
+ARG UNZIP_VERSION=6.0-29+deb13u1
 # https://packages.debian.org/stable/ca-certificates
 # renovate: release=stable depName=ca-certificates
 ARG CA_CERTIFICATES_VERSION=20250419
