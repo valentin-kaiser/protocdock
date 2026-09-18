@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Define default versions for tools needed to install Golang, Protoc, Plugins and the PATH
 # https://packages.debian.org/stable/curl
 # renovate: release=stable depName=curl
-ARG CURL_VERSION=8.14.1-2+deb13u4
+ARG CURL_VERSION=8.14.1-2+deb13u5
 # https://packages.debian.org/stable/git
 # renovate: release=stable depName=git
 ARG GIT_VERSION=1:2.47.3-0+deb13u1
@@ -16,7 +16,7 @@ ARG GIT_VERSION=1:2.47.3-0+deb13u1
 ARG MAKE_VERSION=4.4.1-2
 # https://packages.debian.org/stable/unzip
 # renovate: release=stable depName=unzip
-ARG UNZIP_VERSION=6.0-29
+ARG UNZIP_VERSION=6.0-29+deb13u1
 # https://packages.debian.org/stable/ca-certificates
 # renovate: release=stable depName=ca-certificates
 ARG CA_CERTIFICATES_VERSION=20250419
@@ -46,13 +46,13 @@ ARG PROTOC_GEN_GO_GRPC_VERSION=1.6.2
 ARG PROTOC_GEN_GO_JRPC_VERSION=v1.1.0
 # https://github.com/protocolbuffers/protobuf-javascript/releases
 # renovate: datasource=github-releases depName=protobuf-javascript packageName=protocolbuffers/protobuf-javascript
-ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.2
+ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.3
 # https://github.com/grpc/grpc-web/releases
 # renovate: datasource=github-releases depName=grpc-web packageName=grpc/grpc-web
 ARG GRPC_WEB_VERSION=2.1.1
 # https://www.npmjs.com/package/ts-proto
 # renovate: datasource=npm depName=ts-proto packageName=ts-proto
-ARG TS_PROTO_VERSION=2.12.3
+ARG TS_PROTO_VERSION=2.12.4
 # https://github.com/pseudomuto/protoc-gen-doc/releases
 # renovate: datasource=github-releases depName=protoc-gen-doc packageName=pseudomuto/protoc-gen-doc
 ARG PROTOC_GEN_DOC_VERSION=1.5.1
