@@ -44,6 +44,9 @@ ARG PROTOC_GEN_GO_GRPC_VERSION=1.6.2
 # https://pkg.go.dev/github.com/valentin-kaiser/protoc-gen-jrpc?tab=versions
 # renovate: datasource=go depName=protoc-gen-jrpc packageName=github.com/valentin-kaiser/protoc-gen-jrpc
 ARG PROTOC_GEN_GO_JRPC_VERSION=v1.1.1
+# https://pkg.go.dev/github.com/valentin-kaiser/protoc-gen-xrpc?tab=versions
+# renovate: datasource=go depName=protoc-gen-xrpc packageName=github.com/valentin-kaiser/protoc-gen-xrpc
+ARG PROTOC_GEN_GO_XRPC_VERSION=v0.0.1
 # https://github.com/protocolbuffers/protobuf-javascript/releases
 # renovate: datasource=github-releases depName=protobuf-javascript packageName=protocolbuffers/protobuf-javascript
 ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.3
@@ -91,7 +94,8 @@ RUN curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v${PR
 # Install ProtoC-Gen-Go plugins
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v${PROTOC_GEN_GO_VERSION} && \
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PROTOC_GEN_GO_GRPC_VERSION} && \
-    go install github.com/valentin-kaiser/protoc-gen-jrpc/cmd/protoc-gen-go-jrpc@${PROTOC_GEN_GO_JRPC_VERSION}
+    go install github.com/valentin-kaiser/protoc-gen-jrpc/cmd/protoc-gen-go-jrpc@${PROTOC_GEN_GO_JRPC_VERSION} && \
+    go install github.com/valentin-kaiser/protoc-gen-xrpc/cmd/protoc-gen-go-xrpc@${PROTOC_GEN_GO_XRPC_VERSION}
 
 # Install GRPC-Web
 RUN curl -LO https://github.com/grpc/grpc-web/releases/download/${GRPC_WEB_VERSION}/protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
