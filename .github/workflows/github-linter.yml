@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v8
+        uses: super-linter/super-linter/slim@v9
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_GO: false
