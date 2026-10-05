@@ -59,7 +59,7 @@ WORKDIR /dl
 # Protocol Buffers Compiler (binary and well-known type includes only)
 RUN curl -fsSLO https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION#v}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip && \
     unzip -q protoc-${PROTOC_VERSION#v}-linux-x86_64.zip -d /out && \
-    rm /out/readme.txt 2>/dev/null; \
+    rm -f /out/readme.txt && \
     ls /out/bin/protoc /out/include/google/protobuf/any.proto
 
 # GRPC-Web
