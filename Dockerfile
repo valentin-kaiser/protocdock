@@ -1,35 +1,8 @@
-# Use debian stable as the base image
-FROM debian:stable-slim
-
-# Avoid prompts from apt during build
-ARG DEBIAN_FRONTEND=noninteractive
-
-# Define default versions for tools needed to install Golang, Protoc, Plugins and the PATH
-# https://packages.debian.org/stable/curl
-# renovate: release=stable depName=curl
-ARG CURL_VERSION=8.14.1-2+deb13u5
-# https://packages.debian.org/stable/git
-# renovate: release=stable depName=git
-ARG GIT_VERSION=1:2.47.3-0+deb13u1
-# https://packages.debian.org/stable/make
-# renovate: release=stable depName=make
-ARG MAKE_VERSION=4.4.1-2
-# https://packages.debian.org/stable/unzip
-# renovate: release=stable depName=unzip
-ARG UNZIP_VERSION=6.0-29+deb13u1
-# https://packages.debian.org/stable/ca-certificates
-# renovate: release=stable depName=ca-certificates
-ARG CA_CERTIFICATES_VERSION=20250419
-# https://packages.debian.org/stable/gnupg
-# renovate: release=stable depName=gnupg
-ARG GNUPG_VERSION=2.4.7-21+deb13u1
-# https://deb.nodesource.com/
-# renovate: datasource=node-version depName=node packageName=node
-ARG NODE_SETUP_VERSION=24.x
-ARG NODE_VERSION=24.14.*
+# Define default versions for Golang, Protoc and Plugins
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
 ARG GO_VERSION=1.27.1
+ARG ALPINE_VERSION=3.22
 
 # Defined default version for Protoc and Plugins
 # https://github.com/protocolbuffers/protobuf
@@ -60,63 +33,72 @@ ARG TS_PROTO_VERSION=2.13.0
 # renovate: datasource=github-releases depName=protoc-gen-doc packageName=pseudomuto/protoc-gen-doc
 ARG PROTOC_GEN_DOC_VERSION=1.5.1
 
-# Set environment variables for Golang, Protoc, Plugins and the PATH
-ENV INSTALL_DIR=/usr/local
-ENV GOPATH=$INSTALL_DIR
-ENV GOROOT=$INSTALL_DIR/go
-ENV GO111MODULE=on 
-ENV PATH=$PATH:$INSTALL_DIR:$GOROOT/bin
+# Stage 1: build the Go plugins as static, stripped binaries
+FROM golang:${GO_VERSION}-alpine AS go-plugins
+ARG PROTOC_GEN_GO_VERSION
+ARG PROTOC_GEN_GO_GRPC_VERSION
+ARG PROTOC_GEN_GO_JRPC_VERSION
+ARG PROTOC_GEN_GO_XRPC_VERSION
+ENV CGO_ENABLED=0 GOBIN=/out
+RUN apk add --no-cache git && \
+    go install -trimpath -ldflags="-s -w" google.golang.org/protobuf/cmd/protoc-gen-go@v${PROTOC_GEN_GO_VERSION} && \
+    go install -trimpath -ldflags="-s -w" google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PROTOC_GEN_GO_GRPC_VERSION} && \
+    go install -trimpath -ldflags="-s -w" github.com/valentin-kaiser/protoc-gen-jrpc/cmd/protoc-gen-go-jrpc@${PROTOC_GEN_GO_JRPC_VERSION} && \
+    go install -trimpath -ldflags="-s -w" github.com/valentin-kaiser/protoc-gen-xrpc/cmd/protoc-gen-go-xrpc@${PROTOC_GEN_GO_XRPC_VERSION}
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Stage 2: download the prebuilt release binaries and install ts-proto
+FROM node:24-alpine AS downloads
+ARG PROTOC_VERSION
+ARG PROTOBUF_JAVASCRIPT_VERSION
+ARG GRPC_WEB_VERSION
+ARG TS_PROTO_VERSION
+ARG PROTOC_GEN_DOC_VERSION
+RUN apk add --no-cache curl unzip
+WORKDIR /dl
 
-RUN mkdir -p /app && \
-    mkdir -p $INSTALL_DIR/bin && \
-    mkdir -p /etc/apt/keyrings/
+# Protocol Buffers Compiler (binary and well-known type includes only)
+RUN curl -fsSLO https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION#v}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip && \
+    unzip -q protoc-${PROTOC_VERSION#v}-linux-x86_64.zip -d /out && \
+    rm -f /out/readme.txt && \
+    ls /out/bin/protoc /out/include/google/protobuf/any.proto
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl=${CURL_VERSION} git=${GIT_VERSION} make=${MAKE_VERSION} unzip=${UNZIP_VERSION} ca-certificates=${CA_CERTIFICATES_VERSION} gnupg=${GNUPG_VERSION}
+# GRPC-Web
+RUN curl -fsSL -o /out/bin/protoc-gen-grpc-web https://github.com/grpc/grpc-web/releases/download/${GRPC_WEB_VERSION}/protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
+    chmod +x /out/bin/protoc-gen-grpc-web
 
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_SETUP_VERSION} | bash - && \
-    apt-get install -y --no-install-recommends nodejs=${NODE_VERSION}
+# Protobuf for JavaScript (only the plugin binary is needed)
+RUN curl -fsSL https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${PROTOBUF_JAVASCRIPT_VERSION}/protobuf-javascript-${PROTOBUF_JAVASCRIPT_VERSION}-linux-x86_64.tar.gz | \
+    tar -xz -C /out bin/protoc-gen-js
 
-RUN rm -rf /var/lib/apt/lists/*
+# Protoc-Gen-Doc
+RUN curl -fsSL https://github.com/pseudomuto/protoc-gen-doc/releases/download/v${PROTOC_GEN_DOC_VERSION}/protoc-gen-doc_${PROTOC_GEN_DOC_VERSION}_linux_amd64.tar.gz | \
+    tar -xz -C /out/bin protoc-gen-doc && \
+    chmod +x /out/bin/protoc-gen-doc
 
-# Install Golang
-RUN curl -O https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz && \
-    tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local && \
-    rm go${GO_VERSION}.linux-amd64.tar.gz
+# ts-proto (installed to its own prefix, caches and docs removed)
+RUN npm install -g --prefix /opt/node ts-proto@${TS_PROTO_VERSION} && \
+    npm cache clean --force && \
+    find /opt/node -type f \( -name "*.md" -o -name "*.map" -o -name "*.d.ts" -o -name "*.ts.map" \) ! -path "*/ts-proto/build/*" -delete && \
+    ln -sf ../lib/node_modules/ts-proto/protoc-gen-ts_proto /opt/node/bin/protoc-gen-ts_proto
 
-# Install Protocol Buffers Compiler
-RUN curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION#v}/protoc-${PROTOC_VERSION#v}-linux-x86_64.zip && \
-    unzip protoc-${PROTOC_VERSION#v}-linux-x86_64.zip -d $INSTALL_DIR && \
-    rm protoc-${PROTOC_VERSION#v}-linux-x86_64.zip
+# Stage 3: minimal runtime image
+FROM alpine:${ALPINE_VERSION}
 
-# Install ProtoC-Gen-Go plugins
-RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v${PROTOC_GEN_GO_VERSION} && \
-    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PROTOC_GEN_GO_GRPC_VERSION} && \
-    go install github.com/valentin-kaiser/protoc-gen-jrpc/cmd/protoc-gen-go-jrpc@${PROTOC_GEN_GO_JRPC_VERSION} && \
-    go install github.com/valentin-kaiser/protoc-gen-xrpc/cmd/protoc-gen-go-xrpc@${PROTOC_GEN_GO_XRPC_VERSION}
+# bash is required for the login shell entrypoint, gcompat/libstdc++ run the glibc based release binaries,
+# nodejs is needed at runtime by ts-proto, git and make are kept for user commands
+RUN apk add --no-cache bash git make nodejs gcompat libstdc++
 
-# Install GRPC-Web
-RUN curl -LO https://github.com/grpc/grpc-web/releases/download/${GRPC_WEB_VERSION}/protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
-    chmod +x protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
-    mv protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 $INSTALL_DIR/bin/protoc-gen-grpc-web
+COPY --from=downloads /out/bin/ /usr/local/bin/
+COPY --from=downloads /out/include/ /usr/local/include/
+COPY --from=downloads /opt/node/lib/node_modules /usr/lib/node_modules
+COPY --from=go-plugins /out/ /usr/local/bin/
 
-# Install Protobuf for JavaScript
-RUN curl -LO https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${PROTOBUF_JAVASCRIPT_VERSION}/protobuf-javascript-${PROTOBUF_JAVASCRIPT_VERSION}-linux-x86_64.tar.gz && \
-    tar -xzf protobuf-javascript-${PROTOBUF_JAVASCRIPT_VERSION}-linux-x86_64.tar.gz -C $INSTALL_DIR && \
-    rm protobuf-javascript-${PROTOBUF_JAVASCRIPT_VERSION}-linux-x86_64.tar.gz
+ENV GOPATH=/usr/local
 
-# Install ts-proto globally
-RUN npm install -g ts-proto@${TS_PROTO_VERSION}
+# Keep ts-proto at the conventional global path /usr/lib/node_modules and expose it on the PATH
+RUN ln -s /usr/lib/node_modules/ts-proto/protoc-gen-ts_proto /usr/local/bin/protoc-gen-ts_proto
 
-# Install Protoc-Gen-Doc
-RUN curl -LO https://github.com/pseudomuto/protoc-gen-doc/releases/download/v${PROTOC_GEN_DOC_VERSION}/protoc-gen-doc_${PROTOC_GEN_DOC_VERSION}_linux_amd64.tar.gz && \
-    tar -xzf protoc-gen-doc_${PROTOC_GEN_DOC_VERSION}_linux_amd64.tar.gz -C $INSTALL_DIR/bin && \
-    chmod +x $INSTALL_DIR/bin/protoc-gen-doc && \
-    rm protoc-gen-doc_${PROTOC_GEN_DOC_VERSION}_linux_amd64.tar.gz
-
-# # Define a basic healthcheck (Example: For a web server, replace with actual server check command)
+# Define a basic healthcheck
 HEALTHCHECK --interval=10s --timeout=10s --start-period=5s CMD [ "protoc", "--version" ]
 
 #checkov:skip=CKV_DOCKER_3:USER is not supported with github actions
