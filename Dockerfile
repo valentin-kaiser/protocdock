@@ -47,7 +47,7 @@ RUN apk add --no-cache git && \
     go install -trimpath -ldflags="-s -w" github.com/valentin-kaiser/protoc-gen-xrpc/cmd/protoc-gen-go-xrpc@${PROTOC_GEN_GO_XRPC_VERSION}
 
 # Stage 2: download the prebuilt release binaries and install ts-proto
-FROM node:24-alpine AS downloads
+FROM node:26-alpine AS downloads
 ARG PROTOC_VERSION
 ARG PROTOBUF_JAVASCRIPT_VERSION
 ARG GRPC_WEB_VERSION
