@@ -1,7 +1,7 @@
 # Define default versions for Golang, Protoc and Plugins
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
-ARG GO_VERSION=1.27.1
+ARG GO_VERSION=1.27.2
 ARG ALPINE_VERSION=3.24
 
 # Defined default version for Protoc and Plugins
