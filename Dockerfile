@@ -1,7 +1,7 @@
 # Define default versions for Golang, Protoc and Plugins
 # https://github.com/golang/go/tags
 # renovate: datasource=golang-version depName=go packageName=go
-ARG GO_VERSION=1.27.1
+ARG GO_VERSION=1.27.2
 ARG ALPINE_VERSION=3.24
 
 # Defined default version for Protoc and Plugins
@@ -28,7 +28,7 @@ ARG PROTOBUF_JAVASCRIPT_VERSION=4.0.3
 ARG GRPC_WEB_VERSION=2.1.1
 # https://www.npmjs.com/package/ts-proto
 # renovate: datasource=npm depName=ts-proto packageName=ts-proto
-ARG TS_PROTO_VERSION=2.13.0
+ARG TS_PROTO_VERSION=2.15.0
 # https://github.com/pseudomuto/protoc-gen-doc/releases
 # renovate: datasource=github-releases depName=protoc-gen-doc packageName=pseudomuto/protoc-gen-doc
 ARG PROTOC_GEN_DOC_VERSION=1.5.1
